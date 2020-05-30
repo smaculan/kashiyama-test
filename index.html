@@ -6,7 +6,7 @@
   </head>
   <body>
     <div id="player" style="height: 1000px;"></div>
-    <script src="https://preview.threekit.com/app/js/threekit-player.js"></script>
+    <script src="https://clara-deployment.s3.amazonaws.com/threekit-player-bundle-preview-.js"></script>
     <script>
       const AUTH_TOKEN = '00daba1f-d43c-4bf9-a933-b2ad57dff5d9';
       const TK_ENV = 'https://preview.threekit.com/';
@@ -24,7 +24,12 @@
         window.api = api;
         await api.when('preloaded');
         window.player = api.enableApi('player');
-        window.configurator = await api.getConfigurator();
+        configurator = await api.getConfigurator();
+        await api.when('loaded');
+        configurator.setConfiguration({
+          fabric: { assetId: '47488e7f-6ee3-412e-9aa7-ad729ba0533d' },
+        });
+        window.configurator = configurator;
       });
     </script>
   </body>
