@@ -25,7 +25,7 @@
         await api.when('preloaded');
         window.player = api.enableApi('player');
         configurator = await api.getConfigurator();
-        await api.when('loaded');
+        await api.when('rendered');
         configurator.setConfiguration({
           fabric: { assetId: '47488e7f-6ee3-412e-9aa7-ad729ba0533d' },
         });
