@@ -1,0 +1,31 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="player" style="height: 1000px;"></div>
+    <script src="https://preview.threekit.com/app/js/threekit-player.js"></script>
+    <script>
+      const AUTH_TOKEN = 'd8d39aac-de34-4d05-b782-e59667661fc3';
+      const TK_ENV = 'https://preview.threekit.com/';
+      threekitPlayer({
+        authToken: AUTH_TOKEN,
+        el: document.getElementById('player'),
+        assetId: '9299d4ea-6f42-404b-8c87-f41b7264c27e',
+        stageId: 'b537565e-3f95-46a7-ae58-4d840cb7633a',
+        display: 'image',
+        showConfigurator: true,
+        initialConfiguration: {
+          fabric: { assetId: '47488e7f-6ee3-412e-9aa7-ad729ba0533d' },
+        },
+      }).then(async (api) => {
+        window.api = api;
+        await api.when('preloaded');
+        window.player = api.enableApi('player');
+        window.configurator = await api.getConfigurator();
+      });
+    </script>
+  </body>
+</html>
