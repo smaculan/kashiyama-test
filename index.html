@@ -13,13 +13,63 @@
       threekitPlayer({
         authToken: AUTH_TOKEN,
         el: document.getElementById('player'),
-        assetId: '9299d4ea-6f42-404b-8c87-f41b7264c27e',
-        stageId: 'b537565e-3f95-46a7-ae58-4d840cb7633a',
+        assetId: '11bc9ee1-a1a6-4918-9413-302ee079ecfe',
+        //stageId: 'b537565e-3f95-46a7-ae58-4d840cb7633a',
         display: 'image',
         showConfigurator: true,
       }).then(async (api) => {
         window.api = api;
+        const rotations = ['front', 'left', 'back', 'right'];
+        let statDragging = false;
+        let startPos = null;
+        let vestView = false;
+        let deltaIdx = 0;
+        let curIdx = 0;
         await api.when('preloaded');
+        api.tools.addTool({
+          active: true,
+          enabled: true,
+          key: 'rotate',
+          handlers: {
+            drag: (ev) => {
+              return {
+                handle: function (ev) {
+                  if (!statDragging) {
+                    statDragging = true;
+                    startPos = ev.clientX;
+                    const config = configurator.getConfiguration();
+                    if (
+                      config.Jacket === 'OFF' &&
+                      config.Vest &&
+                      config.Vest === 'ON'
+                    )
+                      vestView = true;
+                    else vestView = false;
+                    const rotate = config['View angle'] || 'front';
+                    curIdx = rotations.indexOf(rotate);
+                  }
+                  if (!vestView) {
+                    const newDeltaIdx = Math.floor(
+                      (ev.clientX - startPos) / DRAG_PIXEL_SENSITIVITY
+                    );
+                    if (newDeltaIdx !== deltaIdx) {
+                      deltaIdx = newDeltaIdx;
+                      let newIndex = (curIdx + newDeltaIdx) % 4;
+                      if (newIndex <= -1) newIndex += 4;
+                      configurator.setConfiguration({
+                        'View angle': rotations[newIndex],
+                      });
+                    }
+                  }
+                },
+                onEnd: () => {
+                  statDragging = false;
+                  deltaIdx = 0;
+                },
+              };
+            },
+          },
+        });
         window.player = api.enableApi('player');
         configurator = await api.getConfigurator();
         await api.when('loaded');
