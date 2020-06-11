@@ -11,13 +11,13 @@
     <script src="https://preview.threekit.com/app/js/threekit-player.js"></script>
     s
     <script>
-      const AUTH_TOKEN = '00daba1f-d43c-4bf9-a933-b2ad57dff5d9';
-      // const AUTH_TOKEN = 'd8d39aac-de34-4d05-b782-e59667661fc3';
+      // const AUTH_TOKEN = '00daba1f-d43c-4bf9-a933-b2ad57dff5d9';
+      const AUTH_TOKEN = '2cc45ace-04f1-4c20-ac3e-a198976adc5a';
       const TK_ENV = 'https://preview.threekit.com/';
       threekitPlayer({
         authToken: AUTH_TOKEN,
         el: document.getElementById('player'),
-        assetId: '11bc9ee1-a1a6-4918-9413-302ee079ecfe',
+        assetId: '3652c93e-1bf1-45dd-b645-56c33a39de22',
         //stageId: 'b537565e-3f95-46a7-ae58-4d840cb7633a',
         display: 'image',
         initialConfiguration: {
@@ -80,6 +80,7 @@
           },
         });
         window.player = api.enableApi('player');
+        ['pan', 'zoom', 'orbit'].map(api.tools.removeTool);
         configurator = await api.getConfigurator();
         configurator.prefetchAttributes(['View angle']);
         window.configurator = configurator;
