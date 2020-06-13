@@ -35,52 +35,52 @@
         let deltaIdx = 0;
         let curIdx = 0;
         await api.when('preloaded');
-        api.tools.addTool({
-          active: true,
-          enabled: true,
-          key: 'rotate',
-          handlers: {
-            drag: (ev) => {
-              return {
-                handle: function (ev) {
-                  if (!statDragging) {
-                    statDragging = true;
-                    startPos = ev.clientX;
-                    const config = configurator.getConfiguration();
-                    if (
-                      config.Jacket === 'OFF' &&
-                      config.Vest &&
-                      config.Vest === 'ON'
-                    )
-                      vestView = true;
-                    else vestView = false;
-                    const rotate = config['View angle'] || 'front';
-                    curIdx = rotations.indexOf(rotate);
-                  }
-                  if (!vestView) {
-                    const newDeltaIdx = Math.floor(
-                      (ev.clientX - startPos) / DRAG_PIXEL_SENSITIVITY
-                    );
-                    if (newDeltaIdx !== deltaIdx) {
-                      deltaIdx = newDeltaIdx;
-                      let newIndex = (curIdx + newDeltaIdx) % 4;
-                      if (newIndex <= -1) newIndex += 4;
-                      configurator.setConfiguration({
-                        'View angle': rotations[newIndex],
-                      });
-                    }
-                  }
-                },
-                onEnd: () => {
-                  statDragging = false;
-                  deltaIdx = 0;
-                },
-              };
-            },
-          },
-        });
-        window.player = api.enableApi('player');
-        ['pan', 'zoom', 'orbit'].map(api.tools.removeTool);
+        // api.tools.addTool({
+        //   active: true,
+        //   enabled: true,
+        //   key: 'rotate',
+        //   handlers: {
+        //     drag: (ev) => {
+        //       return {
+        //         handle: function (ev) {
+        //           if (!statDragging) {
+        //             statDragging = true;
+        //             startPos = ev.clientX;
+        //             const config = configurator.getConfiguration();
+        //             if (
+        //               config.Jacket === 'OFF' &&
+        //               config.Vest &&
+        //               config.Vest === 'ON'
+        //             )
+        //               vestView = true;
+        //             else vestView = false;
+        //             const rotate = config['View angle'] || 'front';
+        //             curIdx = rotations.indexOf(rotate);
+        //           }
+        //           if (!vestView) {
+        //             const newDeltaIdx = Math.floor(
+        //               (ev.clientX - startPos) / DRAG_PIXEL_SENSITIVITY
+        //             );
+        //             if (newDeltaIdx !== deltaIdx) {
+        //               deltaIdx = newDeltaIdx;
+        //               let newIndex = (curIdx + newDeltaIdx) % 4;
+        //               if (newIndex <= -1) newIndex += 4;
+        //               configurator.setConfiguration({
+        //                 'View angle': rotations[newIndex],
+        //               });
+        //             }
+        //           }
+        //         },
+        //         onEnd: () => {
+        //           statDragging = false;
+        //           deltaIdx = 0;
+        //         },
+        //       };
+        //     },
+        //   },
+        // });
+        // window.player = api.enableApi('player');
+        // ['pan', 'zoom', 'orbit'].map(api.tools.removeTool);
         configurator = await api.getConfigurator();
         configurator.prefetchAttributes(['View angle']);
         window.configurator = configurator;
